@@ -17,18 +17,22 @@ var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 var RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
 
 var channel;
+var connected = false;
 
 // Listen to `message` events
 rtm.on(RTM_EVENTS.MESSAGE, function(message) {
 	channel = message.channel;
-});
-
-rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function() {
-	if (channel) {
+	// responds to every message with "Hello world!"
+	if (connected) {
 		rtm.sendMessage('Hello world!', channel, function messageSent() {
 			console.log("Sent message to a channel");
 		});
 	}
+});
+
+// Open connection to send messages
+rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function() {
+	connected = true;
 });
 
 rtm.start();
