@@ -5,7 +5,7 @@
  * Description: Bot that handles team events
  ******************************************************************************/
 
-var config = require('config.json');
+var config = require('config.json')('conf.json');
 
 // Create client
 var RtmClient = require('@slack/client').RtmClient;
