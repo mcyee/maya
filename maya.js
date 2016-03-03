@@ -6,17 +6,15 @@
  ******************************************************************************/
 
 var config = require('config.json')('conf.json');
+var token  = process.env.SLACK_API_TOKEN || config.token;
 
-// Create client
-var RtmClient = require('@slack/client').RtmClient;
-var token = process.env.SLACK_API_TOKEN || config.token;
-var rtm = new RtmClient(token, {logLevel: 'debug'});
-
-// Get stuff
-var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
+var RTM_EVENTS        = require('@slack/client').RTM_EVENTS;
 var RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
+
+var RtmClient       = require('@slack/client').RtmClient;
 var MemoryDataStore = require('@slack/client').MemoryDataStore;
-var mds = new MemoryDataStore();
+var mds             = new MemoryDataStore();
+var rtm             = new RtmClient(token, {logLevel: 'debug', dataStore: mds});
 
 var channel;
 var connected = false;
@@ -25,15 +23,12 @@ var connected = false;
 rtm.on(RTM_EVENTS.MESSAGE, function(message) {
 	channel = message.channel;
 	if (connected) {
-		// responds to every message with "Hello world!"
-		// TODO: respond only to specified user
-
-		console.log((mds.getUserByName("sky")).toJSON());
-		// if (message.user === mds.getUserByName("sky")) {
-		// 	rtm.sendMessage('Hello world!', channel, function messageSent() {
-		// 		console.log("Sent message to a channel");
-		// 	});
-		// }
+		// responds only to specified user's messages with "Hello world!"
+		if (message.user === mds.getUserByName("sky").id) {
+			rtm.sendMessage('Hello world!', channel, function messageSent() {
+				console.log("Sent message to a channel");
+			});
+		}
 	}
 });
 

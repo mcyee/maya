@@ -1,0 +1,19 @@
+{
+	"name"        : "maya-bot",
+	"version"     : "0.1.0",
+	"description" : "A bot that does various things I felt like making it do",
+	"homepage"    : "https://github.com/mcyee/maya",
+	"main"        : "maya.js",
+	"bugs"        : "https://github.com/mcyee/maya/issues",
+	"repository"  :
+	{
+		"type" : "git",
+		"url"  : "https://github.com/mcyee/maya/maya.git"
+	},
+	"author"       : "Ming-Cee Yee <mingcee@skysketches.com>",
+	"dependencies" :
+	{
+		"@slack/client" : "2.0.x",
+		"config.json"   : "0.x.x"
+	},
+}
