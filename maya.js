@@ -19,22 +19,35 @@ var rtm             = new RtmClient(token, {logLevel: 'debug', dataStore: mds});
 var channel;
 var connected = false;
 
-// Listen to `message` events
+/**
+ * Open connection to send messages
+ */
+rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function() {
+	connected = true;
+});
+
+/**
+ * Listen to `message` events
+ */
 rtm.on(RTM_EVENTS.MESSAGE, function(message) {
 	channel = message.channel;
 	if (connected) {
-		// responds only to specified user's messages with "Hello world!"
-		if (message.user === mds.getUserByName("sky").id) {
-			rtm.sendMessage('Hello world!', channel, function messageSent() {
-				console.log("Sent message to a channel");
+		// Hello!
+		if ((message.text).match(/(^|\s)maya($|\s)/i)) {
+			rtm.sendMessage("Hello!", channel, function messageSent() {
+				console.log("Responded to name in " + channel);
 			});
 		}
-	}
-});
 
-// Open connection to send messages
-rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function() {
-	connected = true;
+		// Did you mean Malton?
+		if ((message.text).match(/(^|\s)milton($|\s)/i)) {
+			rtm.sendMessage("Did you mean Malton?", channel, function messageSent() {
+				console.log("Responded to Milton in " + channel);
+			})
+		}
+
+		// TODO: help list
+	}
 });
 
 rtm.start();
