@@ -5,16 +5,17 @@
  * Description: Bot that handles team events
  ******************************************************************************/
 
-var config = require('config.json')('conf.json');
+var fs     = require('fs');
+var config = JSON.parse(fs.readFileSync('conf.json', 'utf8'));
 var token  = process.env.SLACK_API_TOKEN || config.token;
 
 var RTM_EVENTS        = require('@slack/client').RTM_EVENTS;
 var RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
 
 var RtmClient       = require('@slack/client').RtmClient;
+var rtm             = new RtmClient(token, {logLevel: 'debug', dataStore: mds});
 var MemoryDataStore = require('@slack/client').MemoryDataStore;
 var mds             = new MemoryDataStore();
-var rtm             = new RtmClient(token, {logLevel: 'debug', dataStore: mds});
 
 var channel;
 var connected = false;

@@ -13,7 +13,6 @@
 	"author"       : "Ming-Cee Yee <mingcee@skysketches.com>",
 	"dependencies" :
 	{
-		"@slack/client" : "2.0.x",
-		"config.json"   : "0.x.x"
+		"@slack/client" : "2.0.x"
 	},
 }
